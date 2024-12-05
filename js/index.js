@@ -16,9 +16,23 @@ function welcomeToGame(gameName, userName) {
 function farewell(username) {
     document.getElementById("farewell-section").style = "display: block";
     document.getElementById("farewell-msg").innerHTML = `Good bye and thank you, ${username}`;
-    document.getElementById("total-game-played-data").innerHTML = totalGamePlayed;
-    document.getElementById("number-of-wins-data").innerHTML = numberOfWin;
-    document.getElementById("average-percent-of-wins-data").innerHTML = ((numberOfWin / totalGamePlayed) * 100) + "%"
+
+    let stats =
+        `
+            <table>
+                <tr>
+                    <th>Total number of games played</th>
+                    <th>Number of wins</th>
+                    <th>Average percent of wins</th>
+                </tr>
+                <tr>
+                    <td id="total-game-played-data">${totalGamePlayed}</td>
+                    <td id="number-of-wins-data">${numberOfWin}</td>
+                    <td id="average-percent-of-wins-data">${((numberOfWin / totalGamePlayed) * 100)}%</td>
+                </tr>
+            </table>
+    `
+    document.getElementById("stats-div").innerHTML = stats;
 }
 function reload() {
     gameSession = "y";
@@ -73,7 +87,7 @@ function guessingGame() {
         playSession = prompt(`${userName}, Would you like to keep playing this game? y/n`);
         if (playSession === null) {
             break outer;
-        } 
+        }
         if (playSession.toLowerCase() == "y") {
             totalGamePlayed++;
         }
@@ -137,7 +151,7 @@ let consultOracle = function () {
                 let answer = answers[index];
                 if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "no") {
                     numberOfWin++;
-                } 
+                }
                 alert(answer);
             }
         }
