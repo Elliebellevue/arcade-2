@@ -1,3 +1,6 @@
+let totalGamePlayed = 0;
+let numberOfWin = 0;
+
 let userName = prompt("What is your name?");
 let gameSession = "y"
 function welcomeMessage(userName) {
@@ -9,18 +12,27 @@ function welcomeToGame(gameName, userName) {
     alert(`Hello ${userName}, Let's play ${gameName}`);
 }
 
+
 function farewell(username) {
     document.getElementById("farewell-section").style = "display: block";
     document.getElementById("farewell-msg").innerHTML = `Good bye and thank you, ${username}`;
+    document.getElementById("total-game-played-data").innerHTML = totalGamePlayed;
+    document.getElementById("number-of-wins-data").innerHTML = numberOfWin;
+    document.getElementById("average-percent-of-wins-data").innerHTML = ((numberOfWin / totalGamePlayed) * 100) + "%"
 }
 function reload() {
     gameSession = "y";
+    totalGamePlayed = 0;
+    numberOfWin = 0;
     location.reload();
 }
 
 function playAnotherGame() {
     do {
         gameSession = prompt(`${userName}, Would you like to play another game? y/n`);
+        if (gameSession == "y") {
+            break;
+        }
     } while (gameSession.toLowerCase() == "y" ? true : false);
 
     if (gameSession === "n") {
@@ -31,11 +43,10 @@ function playAnotherGame() {
 function guessingGame() {
     welcomeMessage('Guessing game', userName);
     let inputNumber;
-
+    totalGamePlayed++;
     let playSession = "y";
 
     outer: do {
-
         while (true) {
             inputNumber = prompt("Guess a number between 1 and 10:");
             inputNumber = parseInt(inputNumber) || -1;
@@ -58,12 +69,15 @@ function guessingGame() {
             guessCount++;
         }
         alert("You guessed it in " + guessCount + " guesses");
+        numberOfWin++;
         playSession = prompt(`${userName}, Would you like to keep playing this game? y/n`);
         if (playSession === null) {
             break outer;
+        } 
+        if (playSession.toLowerCase() == "y") {
+            totalGamePlayed++;
         }
     } while (playSession.toLowerCase() == "y" ? true : false);
-
     playAnotherGame();
 
 }
@@ -82,6 +96,7 @@ let consultOracle = function () {
         "Absolutely",
     ]
     let playSession = "y";
+    totalGamePlayed++;
     outer: do {
         let question;
         while (true) {
@@ -111,7 +126,8 @@ let consultOracle = function () {
 
             if (userAction == "stop") {
                 playSession = prompt(`${userName}, Would you like to keep playing this game? y/n`);
-                if (playSession === "y") {
+                if (playSession.toLowerCase() === "y") {
+                    totalGamePlayed++;
                     continue outer;
                 } else {
                     break outer;
@@ -119,6 +135,9 @@ let consultOracle = function () {
             } else if (userAction == "shake") {
                 let index = Math.floor(Math.random() * answers.length);
                 let answer = answers[index];
+                if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "no") {
+                    numberOfWin++;
+                } 
                 alert(answer);
             }
         }
@@ -128,6 +147,7 @@ let consultOracle = function () {
 }
 let bnh = () => {
     let playSession = "y";
+    totalGamePlayed++;
     const choices = ['bear', 'ninja', 'hunter'];
 
     let player = userName;
@@ -179,6 +199,7 @@ let bnh = () => {
                         break;
                     case "user":
                         alert("You win!!");
+                        numberOfWin++;
                         break;
                     case "computer":
                         alert("Computer Wins!!");
@@ -192,6 +213,7 @@ let bnh = () => {
                 setTimeout(function () {
                     playSession = prompt(`${userName}, Would you like to keep playing this game? y/n`);
                     if (playSession.toLowerCase() == "y") {
+                        totalGamePlayed++;
                         playGame();
                     } else {
                         gameSession = prompt("Would you like to play another game? y/n");
